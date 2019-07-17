@@ -105,9 +105,91 @@ ggplot(trends_bottom_eight, aes(x = Year,
 
 ```
 
+
+
+```{r death_props_two}
+
+death_rate <- NCHS %>% 
+  group_by(Year, Cause.Name) %>% 
+  summarize(Age.adjusted.Death.Rate = mean(Age.adjusted.Death.Rate)) %>% 
+  filter(Cause.Name != "All causes") %>%
+  filter(Cause.Name == "Cancer" | Cause.Name == "Heart disease") %>% 
+  na.omit() 
+
+ggplot(death_rate, aes(x = Year,
+                       y = Age.adjusted.Death.Rate,
+                       color = Cause.Name,
+                       fill = Cause.Name)) +
+
+  geom_point(size = 1.5) +
+  geom_smooth() +
+
+  scale_fill_discrete(name = "Cause of Death") +
+  scale_color_discrete(name = "Cause of Death") +
+
+  labs(x = NULL, y = "Mean Age-adjusted Death Rate",
+       title = "Top Two Killers in the United States, 1999-2016",
+       subtitle = "Heart Disease and Cancer Most Deadly",
+       caption = "Source: Center for Disease Control and Prevention") +
+
+  theme_tufte() +
+
+  theme(plot.title = element_text(size = rel(1.5), face ="bold"),
+        plot.subtitle = element_text(face = "italic"),
+        legend.title = element_text(size = rel(1.2), face = "bold"),
+        axis.title.y = element_text(size = rel(1.2)),
+        plot.caption = element_text(face = "italic"),
+        panel.grid.major.y = element_line(color = "gray"),
+        panel.grid.minor.y = element_line(color = "gray"))
+
+
+```
+
+```{r death_props_eight}
+
+death_rate <- NCHS %>% 
+  group_by(Year, Cause.Name) %>% 
+  summarize(Age.adjusted.Death.Rate = mean(Age.adjusted.Death.Rate)) %>% 
+  filter(Cause.Name != "All causes") %>% 
+  filter(Cause.Name != "Cancer") %>% 
+  filter(Cause.Name != "Heart disease") %>% 
+  na.omit() 
+
+ggplot(death_rate, aes(x = Year,
+                       y = Age.adjusted.Death.Rate,
+                       color = Cause.Name,
+                       fill = Cause.Name)) +
+
+  geom_point(size = 1.5) +
+  geom_smooth() +
+
+  scale_fill_discrete(name = "Cause of Death") +
+  scale_color_discrete(name = "Cause of Death") +
+
+  labs(x = NULL, y = "Mean Age-adjusted Death Rate",
+       title = "Top Two Killers in the United States, 1999-2016",
+       subtitle = "Heart Disease and Cancer Most Deadly",
+       caption = "Source: Center for Disease Control and Prevention") +
+
+  theme_tufte() +
+
+  theme(plot.title = element_text(size = rel(1.5), face ="bold"),
+        plot.subtitle = element_text(face = "italic"),
+        legend.title = element_text(size = rel(1.2), face = "bold"),
+        axis.title.y = element_text(size = rel(1.2)),
+        plot.caption = element_text(face = "italic"),
+        panel.grid.major.y = element_line(color = "gray"))
+
+
+```
+
+
+
 ```{r map}
 
 # Map with shading according to number 1 killer in past 5 years
+
+
 
 
 ```
