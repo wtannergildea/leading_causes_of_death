@@ -128,8 +128,8 @@ ggplot(death_rate, aes(x = Year,
   scale_color_discrete(name = "Cause of Death") +
 
   labs(x = NULL, y = "Mean Age-adjusted Death Rate",
-       title = "Top Two Killers in the United States, 1999-2016",
-       subtitle = "Heart Disease and Cancer Most Deadly",
+       title = "Cancer and Heart Disease Death Rates Trending Downwards",
+       subtitle = "Deaths per 100,000",
        caption = "Source: Center for Disease Control and Prevention") +
 
   theme_tufte() +
@@ -167,8 +167,8 @@ ggplot(death_rate, aes(x = Year,
   scale_color_discrete(name = "Cause of Death") +
 
   labs(x = NULL, y = "Mean Age-adjusted Death Rate",
-       title = "Top Two Killers in the United States, 1999-2016",
-       subtitle = "Heart Disease and Cancer Most Deadly",
+       title = "Death Rates for Other Top Killers",
+       subtitle = "Trends are mixed: Strokes are down, Alzheimer's on the rise",
        caption = "Source: Center for Disease Control and Prevention") +
 
   theme_tufte() +
