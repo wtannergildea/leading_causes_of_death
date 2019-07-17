@@ -19,7 +19,7 @@ NCHS <- read.csv("NCHS.csv") %>%
   
 ```
 
-```{r top_two}
+```{r top_two_totals}
 
 # Projected nationwide trends of all 10 (or 5?)
 
@@ -60,7 +60,7 @@ ggplot(trends, aes(x = Year,
 
 ```
 
-```{r top_eight}
+```{r top_eight_totals}
 
 trends_bottom_eight <- NCHS %>% 
   select(Year, Cause.Name, Deaths) %>% 
