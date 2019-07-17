@@ -9,6 +9,14 @@ NCHS <- read.csv("NCHS.csv") %>%
 
 # Projected nationwide trends of all 10 (or 5?)
 
+trends <- NCHS %>% 
+  select(Year, Cause.Name, Deaths) %>% 
+  group_by(Year, Cause.Name) %>% 
+  summarize("Deaths" = sum(Deaths)) %>% 
+  filter(Cause.Name != "All causes")
+
+p <- ggplot(trends, aes(x = Year, y = Deaths)) +
+  geom_point()
 
 
 

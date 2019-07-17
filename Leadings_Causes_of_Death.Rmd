@@ -1,0 +1,114 @@
+---
+title: "Leading Causes of Death"
+author: "Tanner Gildea"
+date: "7/17/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+
+library(tidyverse)
+library(readxl)
+library(ggplot2)
+library(ggthemes)
+library(scales)
+
+NCHS <- read.csv("NCHS.csv") %>% 
+  select(-X113.Cause.Name)  
+  
+```
+
+```{r top_two}
+
+# Projected nationwide trends of all 10 (or 5?)
+
+trends_top_two <- NCHS %>% 
+  select(Year, Cause.Name, Deaths) %>% 
+  group_by(Year, Cause.Name) %>% 
+  summarize("Deaths" = sum(Deaths)) %>% 
+  filter(Cause.Name != "All causes") %>% 
+  na.omit() %>% 
+  filter(Cause.Name == "Cancer" | Cause.Name == "Heart disease")
+
+ggplot(trends, aes(x = Year,
+                   y = Deaths, 
+                   color = Cause.Name,
+                   fill = Cause.Name)) +
+  
+  geom_point(size = 1.5) +
+  geom_smooth() +
+  
+  scale_y_continuous(labels = scales::comma) + 
+  
+  scale_fill_discrete(name = "Cause of Death") + 
+  scale_color_discrete(name = "Cause of Death") +
+  
+  labs(x = NULL, y = "Total Number of Deaths Nationwide",
+       title = "Top Two Killers in the United States, 1999-2016",
+       subtitle = "Heart Disease and Cancer Most Deadly",
+       caption = "Source: Center for Disease Control and Prevention") +
+  
+  theme_tufte() +
+  
+  theme(plot.title = element_text(size = rel(1.5), face ="bold"),
+        plot.subtitle = element_text(face = "italic"),
+        legend.title = element_text(size = rel(1.2), face = "bold"),
+        axis.title.y = element_text(size = rel(1.2)),
+        plot.caption = element_text(face = "italic"),
+        panel.grid.major.y = element_line(color = "gray"))
+
+```
+
+```{r top_eight}
+
+trends_bottom_eight <- NCHS %>% 
+  select(Year, Cause.Name, Deaths) %>% 
+  group_by(Year, Cause.Name) %>% 
+  summarize("Deaths" = sum(Deaths)) %>% 
+  filter(Cause.Name != "All causes") %>% 
+  filter(Cause.Name != "Cancer") %>% 
+  filter(Cause.Name != "Heart disease") %>% 
+  na.omit() 
+
+ggplot(trends_bottom_eight, aes(x = Year,
+                   y = Deaths, 
+                   color = Cause.Name,
+                   fill = Cause.Name)) +
+  
+  geom_point(size = 1.5) +
+  geom_smooth() +
+    
+  scale_y_continuous(labels = scales::comma,
+                     breaks = c(100000, 150000, 200000, 250000, 300000)) + 
+  
+  labs(x = NULL, y = "Total Number of Deaths Nationwide",
+       title = "Top Ten Killers in the United States Cont.",
+       subtitle = "Stroke, Chronic Lower Respiratory Disease, and Unintentional Injuries Round Out the Top Five",
+       caption = "Source: Center for Disease Control and Prevention") +
+  
+  scale_color_brewer(palette = "Paired") +
+  scale_fill_brewer(palette = "Paired") +
+  
+  scale_fill_discrete(name = "Cause of Death") + 
+  scale_color_discrete(name = "Cause of Death") +
+  
+  theme_tufte() +
+  
+  theme(plot.title = element_text(size = rel(1.5), face ="bold"),
+        plot.subtitle = element_text(face = "italic"),
+        legend.title = element_text(size = rel(1.2), face = "bold"),
+        axis.title.y = element_text(size = rel(1.2)),
+        plot.caption = element_text(face = "italic"),
+        panel.grid.major.y = element_line(color = "gray"))
+
+
+```
+
+```{r map}
+
+# Map with shading according to number 1 killer in past 5 years
+
+
+```
+
