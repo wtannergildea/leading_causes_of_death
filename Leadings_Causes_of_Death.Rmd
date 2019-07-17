@@ -13,6 +13,7 @@ library(readxl)
 library(ggplot2)
 library(ggthemes)
 library(scales)
+library(maps)
 
 NCHS <- read.csv("NCHS.csv") %>% 
   select(-X113.Cause.Name)  
@@ -185,11 +186,55 @@ ggplot(death_rate, aes(x = Year,
 
 
 
-```{r map}
+```{r map_top_killers}
 
 # Map with shading according to number 1 killer in past 5 years
+us_states <- map_data("state")
+
+NCHS_states <- NCHS 
+NCHS_states$region <- tolower(NCHS_states$State)
+
+NCHS_states_joined <- left_join(us_states, NCHS_states)
+
+suicide <- NCHS_states_joined %>% 
+  filter(Cause.Name == "Suicide") %>% 
+  filter(Year == c(2014,2015,2016))
+
+ggplot(data = suicide, aes(x = long,
+                             y = lat,
+                             group = group,
+                             fill = Age.adjusted.Death.Rate)) +
+  
+  facet_wrap(~Year) +
+
+  geom_polygon(color = "grey90", size = .1) +
+
+  coord_map(projection = "albers", lat0 = 39, lat1 = 45) +   # curves map to annoy flat-earthers
+  
+  labs(x = NULL, y = NULL,
+       title = "Title",
+       subtitle = "Sub",
+       caption = "Source: Center for Disease Control and Prevention") +
+  
+  scale_fill_viridis_c(option = "cividis") +
+  
+  theme_map()
 
 
+
+```
+
+```{r map_suicide}
+
+
+```
+
+```{r map_influenza}
+
+
+```
+
+```{r map_unintentional}
 
 
 ```
