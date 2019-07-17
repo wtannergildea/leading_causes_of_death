@@ -53,7 +53,7 @@ ggplot(trends_top_two, aes(x = Year,
   scale_color_discrete(name = "Cause of Death") +
   
   labs(x = NULL, y = "Total Number of Deaths Nationwide",
-       title = "Top Two Killers in the United States, 1999-2016",
+       title = "Top Two Leading Causes of Death in the United States, 1999-2016",
        subtitle = "Heart Disease and Cancer Most Deadly",
        caption = "Source: Center for Disease Control and Prevention") +
   
