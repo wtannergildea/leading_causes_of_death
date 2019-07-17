@@ -1,5 +1,5 @@
 ---
-title: "Leading Causes of Death in the U.S."
+title: "Top Ten Leading Causes of Death in the U.S."
 author: "Tanner Gildea"
 date: "7/17/2019"
 output:
@@ -7,7 +7,6 @@ output:
   pdf_document: default
   word_document: default
 ---
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, 
                       warning = FALSE, 
@@ -26,6 +25,19 @@ NCHS <- read.csv("NCHS.csv") %>%
   select(-X113.Cause.Name)  
   
 ```
+
+The Center for Disease Control and Prevention maintains a [dataset](https://catalog.data.gov/dataset/age-adjusted-death-rates-for-the-top-10-leading-causes-of-death-united-states-2013) of the causes of death in the United States.
+
+Using this data, I present trends in the leading causes of death in the U.S. from 1999 to 2016. I also highlight disease- and state-specific trends.
+
+
+## The Top Two vs. the Bottom Eight
+
+In comparing the top ten leading causes of nationwide deaths, the aggregate numbers make clear that two diseases are separable from the remaining eight. Heart disease and cancer account for more deaths than the remaining leading causes combined. 
+
+You'll notice that cancer deaths have consistently increased overtime, whereas deaths from heart disease began to climb again after an historical decrease in 2011. 
+
+<br />
 
 ```{r top_two_totals}
 
@@ -67,6 +79,13 @@ ggplot(trends_top_two, aes(x = Year,
         panel.grid.major.y = element_line(color = "gray"))
 
 ```
+
+<br />
+<br />
+
+Other leading causes of death in the United States include stroke, chronic lower respiratory diseases (CLRD), Alzheimer's disease, and diabetes. Shark attacks and lightning strikes are notably absent.
+
+<br />
 
 ```{r top_eight_totals}
 
@@ -112,8 +131,17 @@ ggplot(trends_bottom_eight, aes(x = Year,
 
 
 ```
+<br />
 
+## Diving Deeper: Age-Adjusted Death Rates
 
+Although total death statistics are insightful, they do not take into account changes in population. Between 1999 and 2016, the U.S. population [increased](https://www.worldometers.info/world-population/us-population/) from roughly 280 million to 322 million.
+
+Age-adjusted death rates give us a better understanding of trends among the leading causes of death. This proportional statistic represents number of deaths per 100,000 people, and can be calculated specific to cause of death, state, and year.
+
+For example, the age-adjusted death rates of the two leading causes of death, heart disease and cancer, tell a different story from the total annual number of deaths. Although total deaths are increasing, the death rates are generally falling - which bodes well for treatment.
+
+<br />
 
 ```{r death_props_two}
 
@@ -152,6 +180,15 @@ ggplot(death_rate, aes(x = Year,
 
 
 ```
+<br />
+
+The death rates of the other leading causes of deaths are more of a mixed-bag.
+
+Notable gains are clear in the prevention of strokes and deaths related to influenza and pneumonia.
+
+Unfortunately, Alzheimer's disease and deaths related to unintentional injuries are on the rise. Alzheimer's is [projected to cost](https://www.alz.org/news/2018/new_alzheimer_s_association_report_reveals_sharp_i) $1.1 trillion by 2050. Meanwhile, the rise in deaths related to unintentional injuries is likely related to the opioid epidemic, which began its [third wave](https://www.cdc.gov/drugoverdose/epidemic/index.html) in 2013.
+
+<br />
 
 ```{r death_props_eight}
 
@@ -204,6 +241,13 @@ NCHS_states$region <- tolower(NCHS_states$State)
 NCHS_states_joined <- left_join(us_states, NCHS_states)
 
 ```
+<br />
+
+## Looking at the States  
+
+The leading causes of deaths can be isolated according to each specific State. For example, heart disease is the leading cause of death nationwide - but are some state populations more at risk? 
+
+<br />
 
 ```{r map_heart_disease}
 
@@ -237,6 +281,13 @@ ggplot(data = heart_disease, aes(x = long,
         legend.position = "bottom",
         strip.background = element_blank())
 ```
+<br />
+
+The regional South is particularly at-risk for deaths from heart disease, where death rates are almost 235 per 100,000.
+
+Suicide, another leading cause of death, disproportionately affects a different U.S. region - in this case, the West, particularly the Rocky Mountain region.
+
+<br />
 
 ```{r map_suicide}
 
@@ -274,37 +325,44 @@ ggplot(data = suicide, aes(x = long,
 
 
 ```{r map_influenza}
-influenza <- NCHS_states_joined %>% 
-  filter(Cause.Name == "Influenza and pneumonia") %>% 
-  filter(Year %in% c(2013,2014,2015,2016))
-
-ggplot(data = influenza, aes(x = long,
-                             y = lat,
-                             group = group,
-                             fill = Age.adjusted.Death.Rate)) +
-  
-  facet_wrap(~Year, ncol = 2) +
-
-  geom_polygon(color = "grey90", size = .1) +
-
-  coord_map(projection = "albers", lat0 = 39, lat1 = 45) +   # curves map to annoy flat-earthers
-  
-  labs(x = NULL, y = NULL,
-       title = "Influenza and Pneumonia Death Rates By State",
-       subtitle = NULL,
-       caption = "Source: Center for Disease Control and Prevention",
-       fill = "Death rate per 100,000 persons") +
-  
-  scale_fill_viridis_c(option = "viridis") +
-  
-  theme_map() +
-  
-  theme(plot.title = element_text(size = rel(1.5), face ="bold"),
-        plot.caption = element_text(face="italic"),
-        legend.position = "bottom",
-        strip.background = element_blank())
+# influenza <- NCHS_states_joined %>% 
+#   filter(Cause.Name == "Influenza and pneumonia") %>% 
+#   filter(Year %in% c(2013,2014,2015,2016))
+# 
+# ggplot(data = influenza, aes(x = long,
+#                              y = lat,
+#                              group = group,
+#                              fill = Age.adjusted.Death.Rate)) +
+#   
+#   facet_wrap(~Year, ncol = 2) +
+# 
+#   geom_polygon(color = "grey90", size = .1) +
+# 
+#   coord_map(projection = "albers", lat0 = 39, lat1 = 45) +   # curves map to annoy flat-earthers
+#   
+#   labs(x = NULL, y = NULL,
+#        title = "Influenza and Pneumonia Death Rates By State",
+#        subtitle = NULL,
+#        caption = "Source: Center for Disease Control and Prevention",
+#        fill = "Death rate per 100,000 persons") +
+#   
+#   scale_fill_viridis_c(option = "viridis") +
+#   
+#   theme_map() +
+#   
+#   theme(plot.title = element_text(size = rel(1.5), face ="bold"),
+#         plot.caption = element_text(face="italic"),
+#         legend.position = "bottom",
+#         strip.background = element_blank())
 
 ```
+<br />
+
+One particularly interesting cause of death is "unintentional injuries", which could include anything from vehicular accidents to selfie-stick mishaps. You'll see that the rate of death increased sharply in West Virginia, and to a lesser degree in New England. 
+
+The likely culprit? Drug overdoes related to the opioid epidemic, which has hit these areas [particularly hard](https://www.drugabuse.gov/opioid-summaries-by-state/west-virginia-opioid-summary). 
+
+<br />
 
 ```{r map_unintentional}
 unintentional <- NCHS_states_joined %>% 
@@ -338,6 +396,11 @@ ggplot(data = unintentional, aes(x = long,
         strip.background = element_blank())
 
 ```
+<br />
+
+Although the CDC's current dataset ends in 2016, this analysis provides an instructive foundation for understanding the leading causes of death in the United States. 
+
+I will be interested to see how trends develop as more data is released!
 
 
 
