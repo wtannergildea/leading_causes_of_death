@@ -2,7 +2,10 @@
 title: "Leading Causes of Death in the U.S."
 author: "Tanner Gildea"
 date: "7/17/2019"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -320,7 +323,7 @@ ggplot(data = unintentional, aes(x = long,
   coord_map(projection = "albers", lat0 = 39, lat1 = 45) +   # curves map to annoy flat-earthers
   
   labs(x = NULL, y = NULL,
-       title = "Suicide Death Rates By State",
+       title = "Unintentional Death Rates By State",
        subtitle = NULL,
        caption = "Source: Center for Disease Control and Prevention",
        fill = "Death rate per 100,000 persons") +
