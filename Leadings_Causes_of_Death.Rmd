@@ -6,7 +6,11 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE )
+knitr::opts_chunk$set(echo = FALSE, 
+                      warning = FALSE, 
+                      message = FALSE, 
+                      fig.width = 8, 
+                      fig.height = 5)
 
 library(tidyverse)
 library(readxl)
@@ -202,14 +206,14 @@ NCHS_states_joined <- left_join(us_states, NCHS_states)
 
 heart_disease <- NCHS_states_joined %>% 
   filter(Cause.Name == "Heart disease") %>% 
-  filter(Year %in% c(2014,2015,2016))
+  filter(Year %in% c(2013,2014,2015,2016))
 
 ggplot(data = heart_disease, aes(x = long,
                              y = lat,
                              group = group,
                              fill = Age.adjusted.Death.Rate)) +
   
-  facet_wrap(~Year) +
+  facet_wrap(~Year, ncol = 2) +
 
   geom_polygon(color = "grey90", size = .1) +
 
@@ -235,14 +239,14 @@ ggplot(data = heart_disease, aes(x = long,
 
 suicide <- NCHS_states_joined %>% 
   filter(Cause.Name == "Suicide") %>% 
-  filter(Year %in% c(2014,2015,2016))
+  filter(Year %in% c(2013,2014,2015,2016))
 
 ggplot(data = suicide, aes(x = long,
                              y = lat,
                              group = group,
                              fill = Age.adjusted.Death.Rate)) +
   
-  facet_wrap(~Year) +
+  facet_wrap(~Year, ncol = 2) +
 
   geom_polygon(color = "grey90", size = .1) +
 
@@ -269,14 +273,14 @@ ggplot(data = suicide, aes(x = long,
 ```{r map_influenza}
 influenza <- NCHS_states_joined %>% 
   filter(Cause.Name == "Influenza and pneumonia") %>% 
-  filter(Year %in% c(2014,2015,2016))
+  filter(Year %in% c(2013,2014,2015,2016))
 
 ggplot(data = influenza, aes(x = long,
                              y = lat,
                              group = group,
                              fill = Age.adjusted.Death.Rate)) +
   
-  facet_wrap(~Year) +
+  facet_wrap(~Year, ncol = 2) +
 
   geom_polygon(color = "grey90", size = .1) +
 
@@ -302,14 +306,14 @@ ggplot(data = influenza, aes(x = long,
 ```{r map_unintentional}
 unintentional <- NCHS_states_joined %>% 
   filter(Cause.Name == "Unintentional injuries") %>% 
-  filter(Year %in% c(2014,2015,2016))
+  filter(Year %in% c(2013, 2014,2015,2016))
 
 ggplot(data = unintentional, aes(x = long,
                              y = lat,
                              group = group,
                              fill = Age.adjusted.Death.Rate)) +
   
-  facet_wrap(~Year) +
+  facet_wrap(~Year, ncol = 2) +
 
   geom_polygon(color = "grey90", size = .1) +
 
